@@ -1,5 +1,5 @@
 var cols, rows;
-var w = 10;
+var w = 20;
 var grid = [];
 var stack = [];
 
@@ -19,7 +19,7 @@ var debugging = {
 };
 
 var buttonRegions;
-var buttonSize = 40;
+var buttonSize = 75;
 var buttonPadding = 2;
 
 function setup() {
