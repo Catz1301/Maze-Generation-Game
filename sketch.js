@@ -68,7 +68,7 @@ function setup() {
     }
   }
   console.log(buttonRegions);
-  if (windowWidth < (600/density))
+  if (density > 2 && windowWidth/density < 600)
     mobileFirst = true;
   createCanvas(windowWidth, windowHeight);
   // frameRate(5);
