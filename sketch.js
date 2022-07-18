@@ -23,6 +23,8 @@ var buttonSize = 75;
 var buttonPadding = 2;
 
 function setup() {
+  let density = displayDensity();
+  pixelDensity(density);
   buttonRegions = {
     upButton: {
       start: {
