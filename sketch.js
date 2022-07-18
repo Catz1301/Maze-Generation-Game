@@ -1,5 +1,5 @@
 var cols, rows;
-var w = 20;
+var w = 30;
 var grid = [];
 var stack = [];
 
@@ -11,16 +11,16 @@ var mover;
 var finished = false; // flag indicating maze generation completion
 var ready = false; // flag indicating maze is ready to be played. finished must be true
 
-
-
 var debugging = {
   doLogging: false,
   coloredCells: true
 };
 
+var mobileFirst = false;
+
 var buttonRegions;
-var buttonSize = 75;
-var buttonPadding = 2;
+var buttonSize = 125;
+var buttonPadding = 10;
 
 function setup() {
   let density = displayDensity();
@@ -69,13 +69,17 @@ function setup() {
   }
   console.log(buttonRegions);
   if (windowWidth < 600)
-    createCanvas(windowWidth, windowHeight);// - 46*displayDensity());
-  else
-    createCanvas(windowWidth, windowHeight);
+    mobileFirst = true;
+  createCanvas(windowWidth, windowHeight);
   // frameRate(5);
   mover = new Mover(0, 0, w);
   cols = floor(width/w);
-  rows = floor((height-buttonSize*2 - buttonPadding*3)/w);
+  if (mobileFirst) {
+    w = 30;
+    rows = floor((height-buttonSize*2 - buttonPadding*3)/w);
+  } else {
+    rows = floor(height/w);
+  }
 
   for (let j = 0; j < rows; j++) {
     for (let i = 0; i < cols; i++) {
@@ -191,7 +195,8 @@ function draw() {
   if (debugging.doLogging)
     console.log(currentCell);
   mover.show();
-  drawButtons();
+  if (mobileFirst)
+    drawButtons();
 }
 
 function index(i, j) {
