@@ -1,5 +1,5 @@
 var cols, rows;
-var w = 30;
+var w = 40;
 var grid = [];
 var stack = [];
 
@@ -75,7 +75,7 @@ function setup() {
   mover = new Mover(0, 0, w);
   cols = floor(width/w);
   if (mobileFirst) {
-    w = 30;
+    w = 45;
     rows = floor((height-buttonSize*2 - buttonPadding*3)/w);
   } else {
     rows = floor(height/w);
@@ -108,7 +108,7 @@ function draw() {
   //}
 
   currentCell.visited = true;
-  // currentCell.highlight();
+  currentCell.highlight();
   // STEP 1
   if (!finished) {
     var next = currentCell.checkNeighbors();

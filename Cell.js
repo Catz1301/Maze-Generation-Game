@@ -11,7 +11,7 @@ class Cell {
       var x = this.i * w;
       var y = this.j * w;
       noStroke();
-      fill(0, 255, 0, 100);
+      fill(0, 255, 255, 100);
       rect(x, y, w, w);
     };
 
