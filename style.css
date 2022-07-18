@@ -1,0 +1,18 @@
+html, body {
+    margin: 0;
+    padding: 0;
+  }
+  canvas {
+    display: block;
+  }
+  
+  input[type="text"] {
+    border: none;
+    outline: none;
+  }
+  
+  input[type="text"]:focus {
+    border: none;
+    outline: none;
+  }
+  
