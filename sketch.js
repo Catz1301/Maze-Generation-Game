@@ -69,7 +69,7 @@ function setup() {
   }
   console.log(buttonRegions);
   if (density > 2 && windowWidth/density < 600) {
-    createCanvas(windowWidth, windowWidth);
+    createCanvas(windowWidth, windowHeight);
     mobileFirst = true;
   } else {
     createCanvas(windowWidth, windowHeight);
@@ -77,7 +77,7 @@ function setup() {
   // frameRate(5);
   if (mobileFirst) {
     w = 50;
-    rows = floor((height-buttonSize*2 - buttonPadding*3)/w);
+    rows = floor((windowWidth-buttonSize*2 - buttonPadding*3)/w);
   } else {
     rows = floor(height/w);
   }
