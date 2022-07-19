@@ -68,12 +68,15 @@ function setup() {
     }
   }
   console.log(buttonRegions);
-  if (density > 2 && windowWidth/density < 600)
+  if (density > 2 && windowWidth/density < 600) {
+    createCanvas(windowWidth, windowWidth);
     mobileFirst = true;
-  createCanvas(windowWidth, windowHeight);
+  } else {
+    createCanvas(windowWidth, windowHeight);
+  }
   // frameRate(5);
   if (mobileFirst) {
-    w = 45;
+    w = 50;
     rows = floor((height-buttonSize*2 - buttonPadding*3)/w);
   } else {
     rows = floor(height/w);
