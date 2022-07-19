@@ -33,7 +33,7 @@ function setup() {
       },
       end: {
         x: buttonSize*2 + buttonPadding*2,
-        y: windowHeight - buttonPadding*2
+        y: windowHeight - buttonSize - buttonPadding*2
       }
     },
     leftButton: {
@@ -67,7 +67,8 @@ function setup() {
       }
     }
   }
-  console.log(buttonRegions);
+  if (debugging.doLogging)
+    console.log(buttonRegions);
   if (density > 2 && windowWidth/density < 600) {
     createCanvas(windowWidth, windowHeight);
     mobileFirst = true;
@@ -200,7 +201,7 @@ function draw() {
   // }
 
 
-  if (debugging.doLogging)
+  if (debugging.doLogging && !ready)
     console.log(currentCell);
   if (ready)
     mover.show();
@@ -272,11 +273,19 @@ function keyReleased() {
 }
 
 function touchEnded() {
+  let moverI = mover.i;
+  let moverJ = mover.j;
   // Up button
   if ((mouseX >= buttonRegions.upButton.start.x && mouseX <= buttonRegions.upButton.end.x) && 
       (mouseY >= buttonRegions.upButton.start.y && mouseY <= buttonRegions.upButton.end.y)) {
+        if (debugging.doLogging) {
+          console.log({direction: "up", mouseX, mouseY, moverI, moverJ, testCondition1: (index(mover.i, mover.j-1) !== -1)});
+        }
         if (index(mover.i, mover.j-1) !== -1) {
           // console.log("UP pressed");
+          if (debugging.doLogging) {
+            console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[0] && !grid[index(mover.i, mover.j-1)].walls[2])});
+          }
           if (!grid[index(mover.i, mover.j)].walls[0] && !grid[index(mover.i, mover.j-1)].walls[2]) {
             mover.move(mover.i, mover.j-1);
           }
@@ -286,8 +295,14 @@ function touchEnded() {
   // Left button
   if ((mouseX >= buttonRegions.leftButton.start.x && mouseX <= buttonRegions.leftButton.end.x) && 
       (mouseY >= buttonRegions.leftButton.start.y && mouseY <= buttonRegions.leftButton.end.y)) {
+        if (debugging.doLogging) {
+          console.log({direction: "left", mouseX, mouseY, moverI, moverJ, testCondition1: (index(mover.i-1, mover.j) !== -1)});
+        }
         if (index(mover.i-1, mover.j) !== -1) {
           // console.log("LEFT pressed");
+          if (debugging.doLogging) {
+            console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[3] && !grid[index(mover.i-1, mover.j)].walls[1])});
+          }
           if (!grid[index(mover.i, mover.j)].walls[3] && !grid[index(mover.i-1, mover.j)].walls[1]) {
             mover.move(mover.i-1, mover.j);
           }
@@ -297,8 +312,14 @@ function touchEnded() {
   // Down button
   if ((mouseX >= buttonRegions.downButton.start.x && mouseX <= buttonRegions.downButton.end.x) && 
       (mouseY >= buttonRegions.downButton.start.y && mouseY <= buttonRegions.downButton.end.y)) {
+        if (debugging.doLogging) {
+          console.log({direction: "down", mouseX, mouseY, moverI, moverJ, testCondition1: (index(mover.i, mover.j+1) !== -1)});
+        }
         if (index(mover.i, mover.j+1) !== -1) {
           // console.log("DOWN pressed");
+          if (debugging.doLogging) {
+            console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[2] && !grid[index(mover.i, mover.j+1)].walls[0])});
+          }
           if (!grid[index(mover.i, mover.j)].walls[2] && !grid[index(mover.i, mover.j+1)].walls[0]) {
             mover.move(mover.i, mover.j+1);
           }
@@ -308,11 +329,19 @@ function touchEnded() {
   // Right button
   if ((mouseX >= buttonRegions.rightButton.start.x && mouseX <= buttonRegions.rightButton.end.x) && 
       (mouseY >= buttonRegions.rightButton.start.y && mouseY <= buttonRegions.rightButton.end.y)) {
+        if (debugging.doLogging) {
+          console.log({direction: "right", mouseX, mouseY, moverI, moverJ, testCondition1: (index(mover.i+1, mover.j) !== -1)});
+        }
         if (index(mover.i+1, mover.j) !== -1) {
           // console.log("RIGHT pressed");
+          if (debugging.doLogging) {
+            console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[1] && !grid[index(mover.i+1, mover.j)].walls[3])});
+          }
           if (!grid[index(mover.i, mover.j)].walls[1] && !grid[index(mover.i+1, mover.j)].walls[3]) {
             mover.move(mover.i+1, mover.j);
           }
         }
   }
+
+  return false;
 }
