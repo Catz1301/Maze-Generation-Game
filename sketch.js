@@ -102,15 +102,16 @@ function drawButtons() {
 }
 
 function draw() {
-  background(51);
-  //if (finished && ready) {
+  if (mobileFirst && finished && ready) {
+    background(51);
     for (let i = 0; i < grid.length; i++) {
       grid[i].show();
     }
-  //}
+  }
 
   currentCell.visited = true;
-  currentCell.highlight();
+  if (!mobileFirst)
+    currentCell.highlight();
   // STEP 1
   if (!finished) {
     var next = currentCell.checkNeighbors();
@@ -118,7 +119,7 @@ function draw() {
       next.visited = true;
       
       // STEP 2
-      stack.push(currentCell);
+      stack[stack.length] = currentCell;
 
       // STEP 3
       removeWalls(currentCell, next);
@@ -126,10 +127,11 @@ function draw() {
       // STEP 4
       currentCell = next;
     } else if (stack.length > 0) {
-      var cell = stack.pop();
+      var cell = stack[stack.length-1];
       currentCell = cell;
+      stack.length = stack.length-1;
     } else {
-      console.log("done");
+      //console.log("done");
       finished = true;
     }
   }
@@ -138,9 +140,11 @@ function draw() {
     for (let j = 0; j < rows; j++) {
       for (let i = 0; i < cols; i++) {
         if (i == 0 || j == 0 || i == cols-1 || j == rows-1) { // if on the edge
-          console.log(i,j)
+          if (debugging.doLogging)
+            console.log(i,j)
           if (floor(random(0, 10)) == 7 && startCell == null) {
-            console.log("starting point chosen");
+            if (debugging.doLogging)
+              console.log("starting point chosen");
             grid[index(i, j)].startingCell = true;
             startCell = grid[index(i, j)];
             break;
@@ -151,9 +155,11 @@ function draw() {
     for (let j = 0; j < rows; j++) {
       for (let i = 0; i < cols; i++) {
         if (i == 0 || j == 0 || i == cols-1 || j == rows-1) { // if on the edge
-          console.log(i,j)
+          if (debugging.doLogging)
+            console.log(i,j)
           if (floor(random(0,10)) == 7 && endCell == null) {
-            console.log("ending point chosen");
+            if (debugging.doLogging)
+              console.log("ending point chosen");
             endCell = grid[index(i,j)];
             grid[index(i, j)].endingCell = true;
             break;
@@ -196,7 +202,8 @@ function draw() {
 
   if (debugging.doLogging)
     console.log(currentCell);
-  mover.show();
+  if (ready)
+    mover.show();
   if (mobileFirst)
     drawButtons();
 }
