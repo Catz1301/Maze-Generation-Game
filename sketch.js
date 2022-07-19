@@ -20,6 +20,8 @@ var mobileFirst = false;
 
 var buttonRegions;
 var buttonSize = 125;
+var domButtonSize = 100;
+var domButtonMargin = 5;
 var buttonPadding = 10;
 
 function setup() {
@@ -70,7 +72,7 @@ function setup() {
   if (debugging.doLogging)
     console.log(buttonRegions);
   if (density > 2 && windowWidth/density < 600) {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth, windowWidth);
     mobileFirst = true;
   } else {
     createCanvas(windowWidth, windowHeight);
@@ -78,7 +80,24 @@ function setup() {
   // frameRate(5);
   if (mobileFirst) {
     w = 50;
-    rows = floor((windowWidth-buttonSize*2 - buttonPadding*3)/w);
+    // rows = floor((windowWidth-buttonSize*2 - buttonPadding*3)/w);
+    rows = floor(height/w);
+    let buttonUp = createButton("UP");
+    let buttonLeft = createButton("LEFT");
+    let buttonDown = createButton("DOWN");
+    let buttonRight = createButton("RIGHT");
+    
+    let row2Height = height + domButtonSize + domButtonMargin*2;
+
+    buttonUp.position(   domButtonSize + domButtonMargin*2,  height);
+    buttonLeft.position( 0,                                  row2Height);
+    buttonRight.position(domButtonSize + domButtonMargin*2,  row2Height);
+    buttonDown.position(domButtonSize*2 + domButtonMargin*4, row2Height);
+
+    buttonUp.mousePressed(buttonUpPressed);
+    buttonRight.mousePressed(buttonRightPressed);
+    buttonDown.mousePressed(buttonDownPressed);
+    buttonLeft.mousePressed(buttonLeftPressed);
   } else {
     rows = floor(height/w);
   }
@@ -104,6 +123,11 @@ function drawButtons() {
 
 function draw() {
   if (mobileFirst && finished && ready) {
+    background(51);
+    for (let i = 0; i < grid.length; i++) {
+      grid[i].show();
+    }
+  } else {
     background(51);
     for (let i = 0; i < grid.length; i++) {
       grid[i].show();
@@ -237,42 +261,43 @@ function removeWalls(a, b) {
 
 }
 
+
 // INPUT
 function keyReleased() {
   if (ready) {
     if (keyCode == UP_ARROW) {
-      if (index(mover.i, mover.j-1) !== -1) {
-        // console.log("UP pressed");
-        if (!grid[index(mover.i, mover.j)].walls[0] && !grid[index(mover.i, mover.j-1)].walls[2]) {
-          mover.move(mover.i, mover.j-1);
-        }
-      }
+      mover.moveUp();
     } else if (keyCode == RIGHT_ARROW) {
-      if (index(mover.i+1, mover.j) !== -1) {
-        // console.log("RIGHT pressed");
-        if (!grid[index(mover.i, mover.j)].walls[1] && !grid[index(mover.i+1, mover.j)].walls[3]) {
-          mover.move(mover.i+1, mover.j);
-        }
-      }
+      mover.moveRight();
     } else if (keyCode == DOWN_ARROW) {
-      if (index(mover.i, mover.j+1) !== -1) {
-        // console.log("DOWN pressed");
-        if (!grid[index(mover.i, mover.j)].walls[2] && !grid[index(mover.i, mover.j+1)].walls[0]) {
-          mover.move(mover.i, mover.j+1);
-        }
-      }
+      mover.moveDown();
     } else if (keyCode == LEFT_ARROW) {
-      if (index(mover.i-1, mover.j) !== -1) {
-        // console.log("LEFT pressed");
-        if (!grid[index(mover.i, mover.j)].walls[3] && !grid[index(mover.i-1, mover.j)].walls[1]) {
-          mover.move(mover.i-1, mover.j);
-        }
-      }
+      mover.moveLeft();
     }
   }
 }
 
-function touchEnded() {
+function buttonUpPressed() {
+  console.log("up");
+  mover.moveUp();
+}
+
+function buttonRightPressed() {
+  console.log("right");
+  mover.moveRight();
+}
+
+function buttonDownPressed() {
+  console.log("down");
+  mover.moveDown();
+}
+
+function buttonLeftPressed() {
+  console.log("left");
+  mover.moveLeft();
+}
+
+/* function touchEnded() {
   let moverI = mover.i;
   let moverJ = mover.j;
   // Up button
@@ -281,15 +306,10 @@ function touchEnded() {
         if (debugging.doLogging) {
           console.log({direction: "up", mouseX, mouseY, moverI, moverJ, testCondition1: (index(mover.i, mover.j-1) !== -1)});
         }
-        if (index(mover.i, mover.j-1) !== -1) {
-          // console.log("UP pressed");
-          if (debugging.doLogging) {
-            console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[0] && !grid[index(mover.i, mover.j-1)].walls[2])});
-          }
-          if (!grid[index(mover.i, mover.j)].walls[0] && !grid[index(mover.i, mover.j-1)].walls[2]) {
-            mover.move(mover.i, mover.j-1);
-          }
+        if (debugging.doLogging) {
+          console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[0] && !grid[index(mover.i, mover.j-1)].walls[2])});
         }
+        mover.moveUp();
   }
 
   // Left button
@@ -298,15 +318,10 @@ function touchEnded() {
         if (debugging.doLogging) {
           console.log({direction: "left", mouseX, mouseY, moverI, moverJ, testCondition1: (index(mover.i-1, mover.j) !== -1)});
         }
-        if (index(mover.i-1, mover.j) !== -1) {
-          // console.log("LEFT pressed");
-          if (debugging.doLogging) {
-            console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[3] && !grid[index(mover.i-1, mover.j)].walls[1])});
-          }
-          if (!grid[index(mover.i, mover.j)].walls[3] && !grid[index(mover.i-1, mover.j)].walls[1]) {
-            mover.move(mover.i-1, mover.j);
-          }
+        if (debugging.doLogging) {
+          console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[3] && !grid[index(mover.i-1, mover.j)].walls[1])});
         }
+        mover.moveLeft();
   }
 
   // Down button
@@ -315,15 +330,10 @@ function touchEnded() {
         if (debugging.doLogging) {
           console.log({direction: "down", mouseX, mouseY, moverI, moverJ, testCondition1: (index(mover.i, mover.j+1) !== -1)});
         }
-        if (index(mover.i, mover.j+1) !== -1) {
-          // console.log("DOWN pressed");
-          if (debugging.doLogging) {
-            console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[2] && !grid[index(mover.i, mover.j+1)].walls[0])});
-          }
-          if (!grid[index(mover.i, mover.j)].walls[2] && !grid[index(mover.i, mover.j+1)].walls[0]) {
-            mover.move(mover.i, mover.j+1);
-          }
+        if (debugging.doLogging) {
+          console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[2] && !grid[index(mover.i, mover.j+1)].walls[0])});
         }
+        mover.moveDown();
   }
 
   // Right button
@@ -332,16 +342,11 @@ function touchEnded() {
         if (debugging.doLogging) {
           console.log({direction: "right", mouseX, mouseY, moverI, moverJ, testCondition1: (index(mover.i+1, mover.j) !== -1)});
         }
-        if (index(mover.i+1, mover.j) !== -1) {
-          // console.log("RIGHT pressed");
-          if (debugging.doLogging) {
-            console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[1] && !grid[index(mover.i+1, mover.j)].walls[3])});
-          }
-          if (!grid[index(mover.i, mover.j)].walls[1] && !grid[index(mover.i+1, mover.j)].walls[3]) {
-            mover.move(mover.i+1, mover.j);
-          }
+        if (debugging.doLogging) {
+          console.log({moverI, moverJ, testCondition2: (!grid[index(mover.i, mover.j)].walls[1] && !grid[index(mover.i+1, mover.j)].walls[3])});
         }
+        mover.moveRight();
   }
 
-  return false;
-}
+  // return false;
+} */
