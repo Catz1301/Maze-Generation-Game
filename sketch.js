@@ -72,15 +72,14 @@ function setup() {
     mobileFirst = true;
   createCanvas(windowWidth, windowHeight);
   // frameRate(5);
-  mover = new Mover(0, 0, w);
-  cols = floor(width/w);
   if (mobileFirst) {
     w = 45;
     rows = floor((height-buttonSize*2 - buttonPadding*3)/w);
   } else {
     rows = floor(height/w);
   }
-
+  cols = floor(width/w);
+  mover = new Mover(0, 0, w);
   for (let j = 0; j < rows; j++) {
     for (let i = 0; i < cols; i++) {
       var cell = new Cell(i, j);
