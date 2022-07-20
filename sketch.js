@@ -17,7 +17,7 @@ var debugging = {
 };
 
 var mobileFirst = false;
-
+var padding = 0;
 var buttonRegions;
 var buttonSize = 125;
 var domButtonSize = 100;
@@ -80,6 +80,7 @@ function setup() {
   // frameRate(5);
   if (mobileFirst) {
     w = 50;
+    padding = width%w;
     // rows = floor((windowWidth-buttonSize*2 - buttonPadding*3)/w);
     rows = floor(height/w);
     let buttonUp = createButton("UP");
@@ -88,11 +89,12 @@ function setup() {
     let buttonRight = createButton("RIGHT");
     
     let row2Height = height + domButtonSize + domButtonMargin*2;
+    let centerButton = (windowWidth/2) - (150 + domButtonMargin*3)
 
-    buttonUp.position(   domButtonSize + domButtonMargin*2,  height);
-    buttonLeft.position( 0,                                  row2Height);
-    buttonRight.position(domButtonSize*2 + domButtonMargin*4,  row2Height);
-    buttonDown.position(domButtonSize + domButtonMargin*2, row2Height);
+    buttonUp.position(   centerButton + domButtonSize + domButtonMargin*2,  height);
+    buttonLeft.position( centerButton + 0,                                  row2Height);
+    buttonRight.position(centerButton + domButtonSize*2 + domButtonMargin*4,  row2Height);
+    buttonDown.position( centerButton + domButtonSize + domButtonMargin*2, row2Height);
 
     buttonUp.mousePressed(buttonUpPressed);
     buttonRight.mousePressed(buttonRightPressed);
@@ -122,10 +124,13 @@ function drawButtons() {
 }
 
 function draw() {
-  if (mobileFirst && finished && ready) {
-    background(51);
-    for (let i = 0; i < grid.length; i++) {
-      grid[i].show();
+  if (mobileFirst) {
+    translate((width/2) - (cols*w/2), 0);
+    if (finished && ready) {
+      background(51);
+      for (let i = 0; i < grid.length; i++) {
+        grid[i].show();
+      }
     }
   } else {
     background(51);
