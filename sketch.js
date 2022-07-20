@@ -126,18 +126,19 @@ function drawButtons() {
 function draw() {
   if (mobileFirst) {
     translate((width/2) - (cols*w/2), 0);
-    if (finished && ready) {
-      background(51);
-      for (let i = 0; i < grid.length; i++) {
-        grid[i].show();
-      }
-    }
-  } else {
+  }
+    //if (finished && ready) {
+  background(51);
+  for (let i = 0; i < grid.length; i++) {
+    grid[i].show();
+  }
+    //}
+   /* else {
     background(51);
     for (let i = 0; i < grid.length; i++) {
       grid[i].show();
     }
-  }
+  } */
 
   currentCell.visited = true;
   if (!mobileFirst)
