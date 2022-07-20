@@ -91,8 +91,8 @@ function setup() {
 
     buttonUp.position(   domButtonSize + domButtonMargin*2,  height);
     buttonLeft.position( 0,                                  row2Height);
-    buttonRight.position(domButtonSize + domButtonMargin*2,  row2Height);
-    buttonDown.position(domButtonSize*2 + domButtonMargin*4, row2Height);
+    buttonRight.position(domButtonSize*2 + domButtonMargin*4,  row2Height);
+    buttonDown.position(domButtonSize + domButtonMargin*2, row2Height);
 
     buttonUp.mousePressed(buttonUpPressed);
     buttonRight.mousePressed(buttonRightPressed);
