@@ -13,10 +13,10 @@ var ready = false; // flag indicating maze is ready to be played. finished must 
 
 var debugging = {
   doLogging: false,
-  coloredCells: true
+  coloredCells: false
 };
 
-var mobileFirst = false;
+var mobileFirst = false; // Flag indicating mobile-first design. False by default
 var padding = 0;
 var buttonRegions;
 var buttonSize = 125;
@@ -141,7 +141,7 @@ function draw() {
   } */
 
   currentCell.visited = true;
-  if (!mobileFirst)
+  if (!mobileFirst && !ready)
     currentCell.highlight();
   // STEP 1
   if (!finished) {
